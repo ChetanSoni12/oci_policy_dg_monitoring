@@ -1,0 +1,9 @@
+schema_version: 20180708
+name: oci-dg-monitoring
+version: 0.0.21
+runtime: python
+build_image: fnproject/python:3.11
+run_image: fnproject/python:3.11
+entrypoint: /python/bin/fdk /function/func.py handler
+memory: 512
+timeout: 300
