@@ -69,11 +69,9 @@ The first step is to go ahead and create the function from the console for our O
 
 In this option, we are focusing on setting up the **Dynamic Group** and define the necessary policies to ensure our **Function** has the required **IAM Privileges**. 
 
-
-
 1. Navigate to **Identity and Security**, **Domains**, select your domain, and then **Click** on the **Dynamic Groups** tab.
 
-   ![Dynamic Groups](./images/dynamic_groups "Dynamic Groups")
+   ![Dynamic Groups](./images/dynamic_groups.png "Dynamic Groups")
 
 	> **Note:** We are using **Default** Domain here but you can choose any other domain of your choice.
 
