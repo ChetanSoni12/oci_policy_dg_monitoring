@@ -11,8 +11,8 @@ import sys
 # ================================
 NAMESPACE       = os.getenv("NAMESPACE", "custom_metrics")
 RESOURCE_GROUP  = os.getenv("RESOURCE_GROUP", "Policy_DG_audit")
-POLICY_LIMIT    = int(os.getenv("POLICY_LIMIT", "300"))
-STATEMENT_LIMIT = int(os.getenv("STATEMENT_LIMIT", "3000"))
+POLICY_LIMIT    = int(os.getenv("POLICY_LIMIT", "100"))
+STATEMENT_LIMIT = int(os.getenv("STATEMENT_LIMIT", "500"))
 DG_LIMIT        = int(os.getenv("DG_LIMIT", "100"))
 BATCH_SIZE      = int(os.getenv("BATCH_SIZE", "50"))
 
