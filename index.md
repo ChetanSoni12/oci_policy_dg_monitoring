@@ -4,7 +4,7 @@
 
 As OCI environments scale, keeping track of IAM policies and dynamic groups across compartments and identity domains can become complex. **Oracle Cloud Infrastructure** provides powerful **IAM capabilities**, but with that flexibility comes the need for **better visibility** into how policies and groups are distributed across the tenancy.
 
-In the main blog, we looked at why having **this visibility matters** and how it helps **strengthen governance and control** as your cloud footprint grows. This tutorial builds on that discussion and shows **how you can leverage OCI’s native services—specifically OCI Functions, Monitoring, and Dashboards—to automate the tracking of IAM policies and dynamic groups within your OCI Tenancy.**
+In the [main blog](https://www.ateam-oracle.com/post/automating-policy-and-dynamic-group-monitoring-in-oracle-cloud-infrastructure), we looked at why having **this visibility matters** and how it helps **strengthen governance and control** as your cloud footprint grows. This tutorial builds on that discussion and shows **how you can leverage OCI’s native services—specifically OCI Functions, Monitoring, and Dashboards—to automate the tracking of IAM policies and dynamic groups within your OCI Tenancy.**
 
 **The goal here isn’t to audit or validate policy logic, but to give you a clear, real-time view of what exists across your environment**: For eg:, how many policies, policy statements, or dynamic groups are defined and where they reside. By the end, you’ll have a **fully automated setup that uses OCI’s native tools to collect, publish, and visualize this data—helping you manage IAM resources more confidently and efficiently.**
 
