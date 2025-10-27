@@ -2,9 +2,11 @@
 
 ## Introduction
 
-As OCI environments grow, it becomes harder to keep track of how many **IAM policies and dynamic groups** exist across different compartments and domains. While **Oracle Cloud Infrastructure** provides powerful IAM controls, there isn’t a single place to get a consolidated view of policies, statements, or dynamic group usage across the tenancy.
+As OCI environments scale, keeping track of IAM policies and dynamic groups across compartments and identity domains can become complex. **Oracle Cloud Infrastructure** provides powerful **IAM capabilities**, but with that flexibility comes the need for **better visibility** into how policies and groups are distributed across the tenancy.
 
-This guide walks you through automating the **monitoring of IAM policies and dynamic groups** in **OCI** using a **Function** and **custom dashboard**. The goal is not to analyze or validate policy configurations, but to provide visibility into numbers and distribution—such as how many policies, statements, or dynamic groups exist and where they are defined. By the end, you’ll have an automated setup that collects this data, publishes it as custom metrics, and visualizes it through dashboards for easy tracking and reporting.
+In the main blog, we looked at why having **this visibility matters** and how it helps **strengthen governance and control** as your cloud footprint grows. This tutorial builds on that discussion and shows **how you can leverage OCI’s native services—specifically OCI Functions, Monitoring, and Dashboards—to automate the tracking of IAM policies and dynamic groups within your OCI Tenancy.**
+
+**The goal here isn’t to audit or validate policy logic, but to give you a clear, real-time view of what exists across your environment**: For eg:, how many policies, policy statements, or dynamic groups are defined and where they reside. By the end, you’ll have a **fully automated setup that uses OCI’s native tools to collect, publish, and visualize this data—helping you manage IAM resources more confidently and efficiently.**
 
 ## Objectives
 
@@ -14,7 +16,7 @@ This guide walks you through automating the **monitoring of IAM policies and dyn
 	
 	- Define appropriate policies for the function execution and optionally enable logging for troubleshooting.
   
-	- After the successful manual execution of the Function, configure a resource scheduler for automated function execution based on time interval.
+	- After the successful execution of the Function, configure a resource scheduler for automated function execution based on time interval.
   
 	-	Deploy the Dashboard to have a good visibility and analysis of the data collected. 
   
@@ -23,7 +25,7 @@ This guide walks you through automating the **monitoring of IAM policies and dyn
 
 - Access to an OCI tenancy with Admin Access.
 
-- VCN with Public subnet 
+- VCN with a subnet 
 
 - Auth Token for the Admin user with which you would be deploying the Function.
 
@@ -34,19 +36,23 @@ This guide walks you through automating the **monitoring of IAM policies and dyn
 
 The first step is to go ahead and create the function from the console for our OCI Policy and Dynamic Group monitoring.
 
-1. From the OCI console, navigate to **Developer Service** then to **Functions** and Click on **Create Function**
+1. From the OCI console, navigate to **Developer Service** then to **Functions** and Click on **Create Application**
 
 	![Create_Function ](./images/create_function.png "Create_Function")
 
-2. Now provide the details related to your existing **VCN with Public Subnet**, click on **Create**
+2. Now provide the details related to your existing **VCN and Subnet**, click on **Create**
 
 	![Function Details ](./images/func_details.png "Function Details")
 
-3. Navigate to **Configuration** tab, click on **Manage Configurations** and add "**Key** - **Value**" pairs as mentioned below. **Note** - Update the values for **Policy, Policy Statement and Dynamic Groups** if not the **Default** values will be considered. 
+3. Navigate to **Configuration** tab, click on **Manage Configurations** and add "**Key** - **Value**" pairs as mentioned below. 
+
+**Note** - If required, update the values for **Policy, Policy Statement and Dynamic Groups** whereas other value are constant. 
 
 	![Function Configuration ](./images/func_config.png "Function Configuration")
 
-4. Create a **OCI Private Repository** if you don’t already have one for the **Function**. Navigate to **Developer Services** then to **Container Registry** and click on **Create Repository**. On the pop-up provide the required details and click **Create**. **Note** - The access type should be **Private**
+4. Create a **OCI Private Repository** if you don’t already have one for the **Function**. Navigate to **Developer Services** then to **Container Registry** and click on **Create Repository**. On the pop-up provide the required details and click **Create**. 
+
+**Note** - The access type should be **Private**
 
 	![Create Repo ](./images/create_repo.png "Create Repo")
 
@@ -54,7 +60,7 @@ The first step is to go ahead and create the function from the console for our O
 
 	![Setup Guide ](./images/setup_guide.png "Setup Guide")
 
-6. Launch the **Cloud Shell** and follow the **Guide**, **Generate OAuth Token** if you don’t already have one. Go on execute these steps upto step **7** from the guide. Then for the last step, use the below command to create application with Python as the Runtime
+6. Launch the **Cloud Shell** and follow the **Guide**, **Generate OAuth Token** if you don’t already have one. Go on execute these steps upto step **7** from the guide. Then for the last step, use the below command to create application with Python as the Runtime.
 
 	```fn init -runtime python oci-dg-monitoring```
 
@@ -63,7 +69,7 @@ The first step is to go ahead and create the function from the console for our O
 	![Console Output ](./images/console_output.png "Console Output")
 
 
-7. Navigate to the created folder for your **Function**, you should see **func.py**, **func.yaml** and **requirements.txt** files created. Replace those files with the files on this repository.
+7. Navigate to the created folder for your **Function**, you should see **func.py**, **func.yaml** and **requirements.txt** files created. Replace those files with the files on this [repository](https://github.com/ChetanSoni12/oci_policy_dg_monitoring).
 
 ### Task 2: Setup the Dynamic Group and Policies for Function Execution.
 
@@ -98,7 +104,7 @@ In this option, we are focusing on setting up the **Dynamic Group** and define t
 
 ## Task 3: Deploy & Invoke the Function
 
-1. Navigate to the **Cloud Shell** session, and now execute the below command to **Deploy** the function. It should take 3-4 mins to **Deploy**.
+1. Navigate to the **Cloud Shell** session, and now execute the below command to **Deploy** the function. It should take 3-4 mins to **Deployment**.
 
 	```
 	fn deploy --app " OCI Policy_DG_Monitoring"
@@ -106,7 +112,7 @@ In this option, we are focusing on setting up the **Dynamic Group** and define t
 
    ![Function Deploy](./images/func_deploy.png "Function Deploy")
 
-2. After the **Deploy** is successful, you can check if the **Function** tab on the **Application** has an entry by the name **oci-dg-monitoring**.
+2. After the **Deployment** is successful, you can check if the **Function** tab on the **Application** has an entry by the name **oci-dg-monitoring**.
 
    ![Function List](./images/list_func.png "Function List")
 
@@ -126,7 +132,7 @@ In this option, we are focusing on setting up the **Dynamic Group** and define t
 
 ## Task 4: Visualization via Dashboard
 
-After the data is collected, the next step is to get this data to **visualization** via **OCI Dashboard**. The **Git Repo** also has a pre build code for creating this **Dashboard**. The code will create a **Dashboard Group** under **root** compartment by the name **IAM_Policy_DG_Group**. The code will then create a dashboard under this group by the name **OCI_IAM_Policy_DG_Dashboard**.
+Once the data is collected, the next step is to visualize it through an **OCI Dashboard.** The Git repository includes a prebuilt [script](https://github.com/ChetanSoni12/oci_policy_dg_monitoring/blob/main/Dashboard/OCI_Policy_DG_Audit_Dashboard.py) that automates this process. When executed, the script creates a **Dashboard Group named IAM_Policy_DG_Group** in the root compartment. Within this group, it then sets up a **Dashboard called OCI_IAM_Policy_DG_Dashboard**, which presents the collected data in a clear and structured way for easier monitoring and analysis.
 
 
 1. Copy the **OCI_Policy_DG_Audit_Dashboard.py**, file from this repository to your OCI **Cloud Shell**. 
@@ -164,7 +170,7 @@ In this step, we take the invocation of the Function from manual to an automated
 
 	![Schedule Parameters](./images/parameters.png "Schedule Parameters")
 
-5. On the **Schedule** page, select **Interval** as **Weekly**, and select the **Frequency** under select a future time since we need one more step before the scheduled execution can run and then click on **Next**.
+5. On the **Schedule** page, select **Interval** as **Weekly**, under **Time** select a future time and then click on **Next**.
 
 	![Schedule](./images/schedule.png "Schedule")
 
