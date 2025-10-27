@@ -46,13 +46,13 @@ The first step is to go ahead and create the function from the console for our O
 
 3. Navigate to **Configuration** tab, click on **Manage Configurations** and add "**Key** - **Value**" pairs as mentioned below. 
 
-**Note** - If required, update the values for **Policy, Policy Statement and Dynamic Groups** whereas other value are constant. 
+	**Note** - If required, update the values for **Policy, Policy Statement and Dynamic Groups** whereas other value are constant. 
 
 	![Function Configuration ](./images/func_config.png "Function Configuration")
 
-4. Create a **OCI Private Repository** if you don’t already have one for the **Function**. Navigate to **Developer Services** then to **Container Registry** and click on **Create Repository**. On the pop-up provide the required details and click **Create**. 
+4. Create an **OCI Private Repository** if you don’t already have one for the **Function**. Navigate to **Developer Services** then to **Container Registry** and click on **Create Repository**. On the pop-up provide the required details and click **Create**. 
 
-**Note** - The access type should be **Private**
+	**Note** - The access type should be **Private**
 
 	![Create Repo ](./images/create_repo.png "Create Repo")
 
